@@ -6,6 +6,7 @@ import java.util.Map;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Collectors;
 
+//로또의 최고 순위와 최저 순위
 public class LottoHighRankLowRank {
 
 	public static void main(String[] args){
@@ -16,7 +17,7 @@ public class LottoHighRankLowRank {
 	}
 
 	public static int[] solution(int[] lottos, int[] win_nums) {
-		int[] answer = {};
+		int[] answer = new int[2];
 
 		List<Integer> lottosList = Arrays.stream(lottos)
 									.boxed()
@@ -33,6 +34,12 @@ public class LottoHighRankLowRank {
 
 		System.out.println("high: "+(correctCount+unknownNumMap.size()));
 		System.out.println("low: "+correctCount);
+
+		System.out.println("highRank: "+getRank(correctCount+unknownNumMap.size()));
+		System.out.println("lowRank: "+getRank(correctCount));
+
+		answer[0] = getRank(correctCount+unknownNumMap.size());
+		answer[1] = getRank(correctCount);
 
 		return answer;
 	}
@@ -56,8 +63,32 @@ public class LottoHighRankLowRank {
 	}
 
 	// 순위 산정 메소드
-	public int getRank(int correctCount){
+	public static int getRank(int correctCount){
+		int rank = 6;
 
+		switch (correctCount){
+			case 6: rank = 1;
+			break;
+			case 5: rank = 2;
+			break;
+			case 4: rank = 3;
+			break;
+			case 3: rank = 4;
+			break;
+			case 2: rank = 5;
+			default:
+		}
+		return rank;
 	}
+
+	// 다른 사람 풀이
+	// public int[] solution(int[] lottos, int[] winNums) {
+	// 	return LongStream.of(
+	// 		(lottos.length + 1) - Arrays.stream(lottos).filter(l -> Arrays.stream(winNums).anyMatch(w -> w == l) || l == 0).count(),
+	// 		(lottos.length + 1) - Arrays.stream(lottos).filter(l -> Arrays.stream(winNums).anyMatch(w -> w == l)).count()
+	// 	)
+	// 		.mapToInt(op -> (int) (op > 6 ? op - 1 : op))
+	// 		.toArray();
+	// }
 
 }
