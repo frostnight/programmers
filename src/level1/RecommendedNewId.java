@@ -11,22 +11,11 @@ public class RecommendedNewId {
 	}
 
 	public static String solution(String new_id) {
-		String answer = "";
+		String answer = new_id;
 
-		answer = change(1, new_id);
-		System.out.println("level1, answer = " + answer);
-		answer = change(2, answer);
-		System.out.println("level2, answer = " + answer);
-		answer = change(3, answer);
-		System.out.println("level3, answer = " + answer);
-		answer = change(4, answer);
-		System.out.println("level4, answer = " + answer);
-		answer = change(5, answer);
-		System.out.println("level5, answer = " + answer);
-		answer = change(6, answer);
-		System.out.println("level6, answer = " + answer);
-		answer = change(7, answer);
-		System.out.println("level7, answer = " + answer);
+		for(int level=1; level <= 7; level++){
+			answer = change(level, answer);
+		}
 		return answer;
 	}
 
@@ -66,9 +55,10 @@ public class RecommendedNewId {
 			case 7:
 				if(id.length() <= 2){
 					String addId = id.substring(id.length() - 1);
-					while(id.length() <= 3){
+					while(id.length() < 3){
 						id += addId;
 					}
+
 				}
 				return id;
 		}
