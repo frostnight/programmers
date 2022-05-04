@@ -7,20 +7,36 @@ package level1;
  */
 public class CollatzConjecture {
 	public static void main(String[] args) {
-		int num = 0;
+		int num = 626331;
 		System.out.println(solution(num));
 	}
 
 	public static int solution(int num) {
-		int answer = 0;
+		int answer = 1;
+		long long_num = (long)num;
+		while(true){
+			if(answer > 500){
+				return -1;
+			}
+
+			long_num = conjecture(long_num);
+
+			if(num == 1){
+				break;
+			}
+			answer++;
+		}
 		return answer;
 	}
 
-	public static int oddCalc(){
+	public static long conjecture(long num){
 
-	}
+		if(num > 1 && num % 2 == 0){
+			num = num / 2;
+		} else {
+			num = num * 3 + 1;
+		}
 
-	public static int evenCalc(){
-
+		return num;
 	}
 }
