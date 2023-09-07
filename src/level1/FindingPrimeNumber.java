@@ -1,39 +1,45 @@
 package level1;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
+import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
 public class FindingPrimeNumber {
 
     static int solution(int n){
         int sqrt = (int) Math.sqrt((double) n);
+        List<Integer> filters = new ArrayList<>(Arrays.asList(2, 3, 5, 7));
 
-        List<Integer> primeNumbers = new ArrayList<>();
+        for(int i=2; i <= sqrt; i++){
+            if (i % 2 == 0 || i % 3 == 0 || i % 5 == 0 || i % 7 == 0){
+                continue;
+            }
+            filters.add(i);
+        }
 
-        IntStream.range(2, n + 1).forEach(num -> {
-            if(num == 2 || num == 3 || num == 5 || num == 7) {
-                primeNumbers.add(num);
-            } else {
-                boolean is_prime = true;
-                for(int i=0; i < primeNumbers.size(); i++){
-                    if(num % primeNumbers.get(i) == 0){
-                        is_prime = false;
-                        break;
-                    }
-                }
+        List<Integer> primeNumbers = IntStream.range(2, n + 1).boxed().collect(Collectors.toList());
+        filters.forEach(num -> {
 
-                if(is_prime){
-                    primeNumbers.add(num);
-                }
+            List<Integer> primeNumbers_ = primeNumbers.stream().filter(num_ -> num_ % num == 0 && num != num_).collect(Collectors.toList());
+            primeNumbers.clear();
+            primeNumbers.addAll(primeNumbers_);
+            primeNumbers_ = null;
+        });
 
-//                int findNum = IntStream.range(2, sqrt + 1).
-//                    filter(_num -> num % _num == 0 && num != _num).findFirst().orElse(0);
+//        int sqrt = (int) Math.sqrt((double) n);
+//
+//        List<Integer> primeNumbers = new ArrayList<>();
+//
+//        IntStream.range(2, n + 1).forEach(num -> {
+//            if(num == 2 || num == 3 || num == 5 || num == 7) {
+//                primeNumbers.add(num);
+//            } else if (num > 7) {
+//                int findNum = IntStream.range(2, sqrt + 1).filter(sqrt_num -> num % sqrt_num == 0 && num != sqrt_num).findFirst().orElse(0);
 //                if(findNum == 0) {
 //                    primeNumbers.add(num);
 //                }
-            }
-        });
+//            }
+//        });
 
         return primeNumbers.size();
     }
@@ -42,6 +48,11 @@ public class FindingPrimeNumber {
 
     public static void main(String[] args){
         int number = 1000000;
-        System.out.println("solution() = " + solution(number));
+        long start_time = System.currentTimeMillis();
+        int result = FindingPrimeNumber.solution(number);
+        System.out.println("result = " + result);
+        long end_time = System.currentTimeMillis();
+        System.out.println("end_time-start_time = " + ((end_time-start_time)));
+        // 376ms
     }
 }
